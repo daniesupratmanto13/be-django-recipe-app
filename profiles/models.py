@@ -1,6 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
 
 # models
 from recipes.models import Recipe
@@ -47,4 +47,14 @@ class UserAccount(models.Model):
 
 
 class Profile(models.Model):
-    pass
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(
+        default='avatar.png', upload_to='avatars/'
+    )
+    bio = models.TextField(max_length=500, blank=True)
+    bookmarks = models.ManyToManyField(Recipe, related_name='bookmarked')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f'{self.id}-{self.user.username}'

@@ -3,6 +3,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+# third party
+import uuid
+
 # Create your models here.
 
 
@@ -30,6 +33,9 @@ def get_default_recipe_category():
 
 
 class Recipe(models.Model):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False
+    )
     author = models.ForeignKey(
         User, related_name="recipes", on_delete=models.CASCADE)
     category = models.ForeignKey(
@@ -40,11 +46,11 @@ class Recipe(models.Model):
     cook_time = models.TimeField()
     ingredients = models.TextField()
     procedure = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.title
+        return f'{self.id}-{self.author.username}-{self.title}'
 
 
 LIKE_CHOICES = (
@@ -58,7 +64,7 @@ class Like(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     value = models.CharField(
         choices=LIKE_CHOICES, default='Like', max_length=8)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
         return f'{self.user.username} {self.value} {self.recipe}'
