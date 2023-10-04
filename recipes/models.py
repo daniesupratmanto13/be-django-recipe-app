@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -37,7 +37,7 @@ class Recipe(models.Model):
         primary_key=True, default=uuid.uuid4, editable=False
     )
     author = models.ForeignKey(
-        User, related_name="recipes", on_delete=models.CASCADE)
+        settings.AUTH_USER_MODEL, related_name="recipes", on_delete=models.CASCADE)
     category = models.ForeignKey(
         RecipeCategory, on_delete=models.SET(get_default_recipe_category))
     picture = models.ImageField(upload_to="recipes/")
@@ -60,7 +60,8 @@ LIKE_CHOICES = (
 
 
 class Like(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     value = models.CharField(
         choices=LIKE_CHOICES, default='Like', max_length=8)
