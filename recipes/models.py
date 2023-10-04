@@ -12,7 +12,7 @@ import uuid
 class RecipeCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Category Name"))
     slug = models.SlugField(
-        max_length=120, null=False, blank=True, unique=True, editable=False
+        max_length=120, null=False, blank=True, unique=True, editable=False, db_index=True
     )
 
     class Meta:
