@@ -8,13 +8,13 @@ from .models import UserAccount, Profile
 class UserAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ['id', 'email', 'username']
+        fields = ('id', 'email', 'username')
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAccount
-        fields = ['id', 'email', 'username', 'password']
+        fields = ('id', 'email', 'username', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
 
@@ -38,3 +38,12 @@ class UserLoginSerializer(serializers.Serializer):
             )
 
         return data
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    user = UserAccountSerializer(required=True)
+
+    class Meta:
+        model = Profile
+        fields = ('id', 'user', 'avatar', 'bio', 'bookmarks')
