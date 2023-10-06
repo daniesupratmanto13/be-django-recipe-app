@@ -42,7 +42,8 @@ class Recipe(models.Model):
         RecipeCategory, on_delete=models.SET(get_default_recipe_category))
     picture = models.ImageField(upload_to="recipes/")
     title = models.CharField(max_length=200)
-    descripsion = models.CharField(_('description'), max_length=200)
+    description = models.CharField(
+        max_length=200, verbose_name=_('description'))
     cook_time = models.TimeField()
     ingredients = models.TextField()
     procedure = models.TextField()
@@ -51,6 +52,18 @@ class Recipe(models.Model):
 
     def __str__(self) -> str:
         return f'{self.id}-{self.author.username}-{self.title}'
+
+    @property
+    def get_total_like(self):
+        return Like.objects.filter(recipe=self, value='Like').count()
+
+    @property
+    def get_total_unlike(self):
+        return Like.objects.filter(recipe=self, value='Unlike').count()
+
+    @property
+    def get_total_bookmark(self):
+        return self.bookmarked.count()
 
 
 LIKE_CHOICES = (
