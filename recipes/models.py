@@ -38,8 +38,8 @@ class Recipe(models.Model):
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name="recipes", on_delete=models.CASCADE)
-    category = models.ForeignKey(
-        RecipeCategory, on_delete=models.SET(get_default_recipe_category))
+    category = models.ManyToManyField(
+        RecipeCategory, blank=True)
     picture = models.ImageField(upload_to="recipes/")
     title = models.CharField(max_length=200)
     description = models.CharField(
@@ -55,11 +55,11 @@ class Recipe(models.Model):
 
     @property
     def get_total_like(self):
-        return Like.objects.filter(recipe=self, value='Like').count()
+        return RecipeLike.objects.filter(recipe=self, value='Like').count()
 
     @property
     def get_total_unlike(self):
-        return Like.objects.filter(recipe=self, value='Unlike').count()
+        return RecipeLike.objects.filter(recipe=self, value='Unlike').count()
 
     @property
     def get_total_bookmark(self):
@@ -72,7 +72,7 @@ LIKE_CHOICES = (
 )
 
 
-class Like(models.Model):
+class RecipeLike(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

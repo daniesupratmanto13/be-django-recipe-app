@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 # models
-from .models import RecipeCategory, Recipe
+from .models import RecipeCategory, Recipe, RecipeLike
 
 
 class RecipeCategorySerializer(serializers.ModelSerializer):
@@ -34,3 +34,23 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def get_total_bookmark(self, obj):
         return obj.get_total_bookmark()
+
+    def create(self, validated_data):
+        category = validated_data.pop('category')
+        category_instance, created = RecipeCategory.objects.get_or_create(
+            **category)
+        recipe = Recipe.objects.create(
+            **validated_data, category=category_instance)
+
+        return recipe
+
+    def update(self, instance, validated_data):
+        pass
+
+
+class RecipeLikeSerilizer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = RecipeLike
+        fields = ('id', 'user', 'value', 'recipe')
