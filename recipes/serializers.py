@@ -36,16 +36,31 @@ class RecipeSerializer(serializers.ModelSerializer):
         return obj.get_total_bookmark()
 
     def create(self, validated_data):
-        category = validated_data.pop('category')
-        category_instance, created = RecipeCategory.objects.get_or_create(
-            **category)
-        recipe = Recipe.objects.create(
-            **validated_data, category=category_instance)
+        categories = validated_data.pop('category', [])
+        recipe = Recipe.objects.create(**validated_data)
+        for category in categories:
+            category_instance, created = RecipeCategory.objects.get_or_create(
+                **category)
+            recipe.category.add(category_instance)
+
+        recipe.save()
 
         return recipe
 
     def update(self, instance, validated_data):
-        pass
+
+        if 'category' in validated_data:
+            categories = validated_data.pop('category', [])
+            instance.category.clear()
+
+            for category in categories:
+                category_instance, created = RecipeCategory.objects.get_or_create(
+                    **category)
+                instance.category.add(category_instance)
+
+            instance.save()
+
+        return super().update(instance, validated_data)
 
 
 class RecipeLikeSerilizer(serializers.ModelSerializer):
