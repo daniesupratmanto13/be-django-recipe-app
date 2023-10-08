@@ -1,5 +1,9 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, GenericAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    GenericAPIView,
+    RetrieveUpdateAPIView
+)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,13 +15,14 @@ from .models import Profile
 from .serializers import (
     UserAccountSerializer,
     UserRegisterSerializer,
-    UserLoginSerializer
+    UserLoginSerializer,
+    ProfileSerializer
 )
 
 # Create your views here.
 
 
-class RegistrationView(CreateAPIView):
+class RegistrationAPI(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = UserRegisterSerializer
 
@@ -35,7 +40,7 @@ class RegistrationView(CreateAPIView):
             return Response(data, status=status.HTTP_201_CREATED)
 
 
-class LoginView(GenericAPIView):
+class LoginAPI(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = UserLoginSerializer
 
@@ -54,7 +59,7 @@ class LoginView(GenericAPIView):
             return Response(data, status=status.HTTP_200_OK)
 
 
-class LogoutView(GenericAPIView):
+class LogoutAPI(GenericAPIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request):
@@ -65,3 +70,13 @@ class LogoutView(GenericAPIView):
             return Response(status=status.HTTP_205_RESET_CONTENT)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProfileAPI(RetrieveUpdateAPIView):
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user.profile

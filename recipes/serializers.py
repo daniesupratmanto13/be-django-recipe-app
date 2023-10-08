@@ -48,19 +48,20 @@ class RecipeSerializer(serializers.ModelSerializer):
         return recipe
 
     def update(self, instance, validated_data):
+        categories = validated_data.pop('category', [])
+        instance.category.clear()
 
-        if 'category' in validated_data:
-            categories = validated_data.pop('category', [])
-            instance.category.clear()
+        for category in categories:
+            category_instance, created = RecipeCategory.objects.get_or_create(
+                **category)
+            instance.category.add(category_instance)
 
-            for category in categories:
-                category_instance, created = RecipeCategory.objects.get_or_create(
-                    **category)
-                instance.category.add(category_instance)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
 
-            instance.save()
+        instance.save()
 
-        return super().update(instance, validated_data)
+        return instance
 
 
 class RecipeLikeSerilizer(serializers.ModelSerializer):
