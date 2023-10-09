@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     GenericAPIView,
+    RetrieveAPIView,
     RetrieveUpdateAPIView
 )
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -72,7 +73,7 @@ class LogoutAPI(GenericAPIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProfileAPI(RetrieveUpdateAPIView):
+class MyProfileAPI(RetrieveUpdateAPIView):
 
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -80,3 +81,9 @@ class ProfileAPI(RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user.profile
+
+
+class ProfileDetailAPI(RetrieveAPIView):
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
