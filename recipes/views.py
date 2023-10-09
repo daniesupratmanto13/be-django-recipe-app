@@ -4,8 +4,8 @@ from rest_framework.generics import (
     ListAPIView,
     DestroyAPIView,
     RetrieveAPIView,
-    UpdateAPIView
 )
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
@@ -41,7 +41,7 @@ class RecipeDetailAPI(RetrieveAPIView):
     serializer_class = RecipeSerializer
 
 
-class RecipeUpdateDestroyAPI(UpdateAPIView, DestroyAPIView):
+class RecipeUpdateDestroyAPI(UpdateModelMixin, DestroyAPIView):
 
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
