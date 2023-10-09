@@ -75,9 +75,9 @@ class LogoutAPI(GenericAPIView):
 
 class MyProfileAPI(RetrieveUpdateAPIView):
 
+    permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = (IsAuthenticated,)
 
     def get_object(self):
         return self.request.user.profile
@@ -85,5 +85,6 @@ class MyProfileAPI(RetrieveUpdateAPIView):
 
 class ProfileDetailAPI(RetrieveAPIView):
 
+    permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer

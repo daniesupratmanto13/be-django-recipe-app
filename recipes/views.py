@@ -20,15 +20,15 @@ from .serializers import RecipeSerializer, RecipeLikeSerilizer
 
 class RecipeListAPI(ListAPIView):
 
-    queryset = Recipe.objects.all()
     permission_classes = (AllowAny,)
+    queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
 
 class RecipeCreateAPI(CreateAPIView):
 
-    queryset = Recipe.objects.all()
     permission_classes = (IsAuthenticated,)
+    queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
     def perform_create(self, serializer):
@@ -37,12 +37,13 @@ class RecipeCreateAPI(CreateAPIView):
 
 class RecipeDetailAPI(RetrieveAPIView):
 
+    permission_classes = (AllowAny,)
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
 
 
 class RecipeUpdateDestroyAPI(UpdateModelMixin, DestroyAPIView):
 
+    permission_classes = (IsAuthenticated,)
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = (IsAuthenticated,)

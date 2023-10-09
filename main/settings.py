@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'recipes',
 
     # third party apps
-    'rest_framework'
+    'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
