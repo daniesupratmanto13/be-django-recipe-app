@@ -1,9 +1,13 @@
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
     GenericAPIView,
+    ListCreateAPIView,
     RetrieveAPIView,
-    RetrieveUpdateAPIView
+    RetrieveUpdateAPIView,
+    UpdateAPIView
 )
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -11,14 +15,17 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # models
 from .models import Profile
+from recipes.models import Recipe
 
 # serializers
 from .serializers import (
     UserAccountSerializer,
     UserRegisterSerializer,
     UserLoginSerializer,
-    ProfileSerializer
+    ProfileSerializer,
+    PasswordChangeSerializer
 )
+from recipes.serializers import RecipeSerializer
 
 # Create your views here.
 
@@ -88,3 +95,47 @@ class ProfileDetailAPI(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+
+User = get_user_model()
+
+
+class ProfileBookmarkApi(ListCreateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RecipeSerializer
+    profiles = Profile.objects.all()
+
+    def get_queryset(self):
+        user = User.objects.get(id=self.kwargs['pk'])
+        profile = get_object_or_404(self.profiles, user=user)
+        return profile.bookmarks.all()
+
+    def post(self, request, pk):
+        user = User.objects.get(id=pk)
+        profile = get_object_or_404(self.profiles, user=user)
+        recipe = Recipe.objects.get(id=request.data['id'])
+        if profile:
+            profile.bookmarks.add(recipe)
+            return Response(status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        user = User.objects.get(id=pk)
+        profile = get_object_or_404(self.profiles, user=user)
+        recipe = Recipe.objects.get(id=request.data['id'])
+        if profile:
+            profile.bookmarks.remove(recipe)
+            return Response(status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordChangeAPI(UpdateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PasswordChangeSerializer
+
+    def get_object(self):
+        return self.request.user
