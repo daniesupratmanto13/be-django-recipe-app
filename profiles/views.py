@@ -27,6 +27,9 @@ from .serializers import (
 )
 from recipes.serializers import RecipeSerializer
 
+#  models
+User = get_user_model()
+
 # Create your views here.
 
 
@@ -95,9 +98,6 @@ class ProfileDetailAPI(RetrieveAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
-
-User = get_user_model()
 
 
 class ProfileBookmarkApi(ListCreateAPIView):
