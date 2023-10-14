@@ -1,6 +1,6 @@
 {
+  "workbench.colorTheme": "Tokyo Night Storm",
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8"
-  },
-  "workbench.colorTheme": "Tokyo Night Storm"
+  }
 }
