@@ -6,6 +6,8 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
 
+from decouple import config
+
 # models
 from .models import Profile
 User = get_user_model()
@@ -43,11 +45,12 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 
     msg = EmailMultiAlternatives(
         # title:
-        "Password Reset for {title}".format(title="Some website title"),
+        "Password Reset for {title}".format(title="Recipe App Mukbang"),
         # message:
         email_plaintext_message,
         # from:
-        "noreply@somehost.local",
+        config('EMAIL_HOST_USER'),
+        # "noreply@somehost.local",
         # to:
         [reset_password_token.user.email]
     )

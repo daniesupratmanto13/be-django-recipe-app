@@ -9,6 +9,7 @@ djangorestframework = "*"
 pillow = "*"
 djangorestframework-simplejwt = "*"
 django-rest-passwordreset = "*"
+python-decouple = "*"
 
 [dev-packages]
 
