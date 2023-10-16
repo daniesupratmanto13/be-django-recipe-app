@@ -10,6 +10,7 @@ pillow = "*"
 djangorestframework-simplejwt = "*"
 django-rest-passwordreset = "*"
 python-decouple = "*"
+factory-boy = "*"
 
 [dev-packages]
 

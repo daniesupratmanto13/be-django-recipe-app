@@ -7,7 +7,7 @@ from . import views
 app_name = 'profiles'
 
 urlpatterns = [
-    path('register/', views.UserRegisterAPI.as_view(), name='register'),
+    path('register/', views.RegistrationAPI.as_view(), name='register'),
     path('login/', views.LoginAPI.as_view(), name='login'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', views.LogoutAPI.as_view(), name='logout'),

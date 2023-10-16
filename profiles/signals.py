@@ -49,8 +49,8 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # message:
         email_plaintext_message,
         # from:
-        config('EMAIL_HOST_USER'),
-        # "noreply@somehost.local",
+        # config('EMAIL_HOST_USER'),
+        "noreply@somehost.local",
         # to:
         [reset_password_token.user.email]
     )
