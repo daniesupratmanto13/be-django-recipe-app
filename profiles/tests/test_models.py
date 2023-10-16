@@ -4,10 +4,8 @@ from django.contrib.auth import get_user_model
 # factories
 from .factories import UserFactory, ProfileFactory
 
-# Create your tests here.
 
-
-class AccountUserModelTest(TestCase):
+class AccountUserModelTestCase(TestCase):
 
     def setUp(self) -> None:
         self.user = UserFactory()
@@ -18,7 +16,7 @@ class AccountUserModelTest(TestCase):
         self.assertEqual(str(user), expected_string)
 
 
-class ProfileModelTest(TestCase):
+class ProfileModelTestCase(TestCase):
 
     def setUp(self) -> None:
         self.profile = ProfileFactory()
