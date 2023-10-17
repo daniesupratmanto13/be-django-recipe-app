@@ -19,13 +19,20 @@ class RecipeFactory(factory.django.DjangoModelFactory):
         model = Recipe
 
     author = factory.SubFactory(ProfileFactory)
-    category = factory.SubFactory(RecipeCategoryFactory)
     picture = factory.Faker('image_url')
     title = factory.Faker('sentence')
-    descciption = factory.Faker('sentence')
+    description = factory.Faker('sentence')
     cook_time = factory.Faker('date_time')
     ingredients = factory.Faker('text')
     procedure = factory.Faker('text')
+
+    @factory.post_generation
+    def category(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted:
+            for recipe_category in extracted:
+                self.category.add(recipe_category)
 
 
 class RecipeLikeFactory(factory.django.DjangoModelFactory):

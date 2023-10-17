@@ -20,7 +20,7 @@ class RecipeCategory(models.Model):
         verbose_name_plural = _('Recipe Categories')
 
     def __str__(self) -> str:
-        return self.title
+        return f'{self.id}-{self.name}'
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
