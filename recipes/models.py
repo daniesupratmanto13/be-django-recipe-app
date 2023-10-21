@@ -3,10 +3,11 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
+# utils
+from .utils import recipe_picture_dir_path
+
 # third party
 import uuid
-
-# Create your models here.
 
 
 class RecipeCategory(models.Model):
@@ -40,7 +41,7 @@ class Recipe(models.Model):
         settings.AUTH_USER_MODEL, related_name="recipes", on_delete=models.CASCADE)
     category = models.ManyToManyField(
         RecipeCategory, blank=True)
-    picture = models.ImageField(upload_to="recipes/")
+    picture = models.ImageField(upload_to=recipe_picture_dir_path)
     title = models.CharField(max_length=200)
     description = models.CharField(
         max_length=200, verbose_name=_('description'))

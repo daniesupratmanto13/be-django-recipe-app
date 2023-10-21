@@ -30,8 +30,6 @@ from recipes.serializers import RecipeSerializer
 #  models
 User = get_user_model()
 
-# Create your views here.
-
 
 class RegistrationAPI(CreateAPIView):
     permission_classes = (AllowAny,)

@@ -7,7 +7,8 @@ from django.utils.translation import gettext_lazy as _
 # models
 from recipes.models import Recipe
 
-# Create your models here.
+# utils
+from profiles.utils import profile_avatar_dir_path
 
 
 class UserAccountManager(BaseUserManager):
@@ -52,7 +53,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     avatar = models.ImageField(
-        default='avatar.png', upload_to='avatars/'
+        default='avatar.png', upload_to=profile_avatar_dir_path
     )
     bio = models.TextField(max_length=500, blank=True)
     bookmarks = models.ManyToManyField(Recipe, related_name='bookmarked')

@@ -15,8 +15,6 @@ from .models import Recipe, RecipeLike
 # serializers
 from .serializers import RecipeSerializer, RecipeLikeSerilizer
 
-# Create your views here.
-
 
 class RecipeListAPI(ListAPIView):
 
