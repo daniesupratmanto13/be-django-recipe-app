@@ -35,7 +35,7 @@ class RegistrationAPI(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = UserRegisterSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()

@@ -61,7 +61,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return instance
 
 
-class RecipeLikeSerilizer(serializers.ModelSerializer):
+class RecipeLikeSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:

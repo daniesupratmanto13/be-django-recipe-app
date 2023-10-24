@@ -11,6 +11,7 @@ djangorestframework-simplejwt = "*"
 django-rest-passwordreset = "*"
 python-decouple = "*"
 factory-boy = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
