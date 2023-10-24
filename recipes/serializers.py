@@ -29,9 +29,6 @@ class RecipeSerializer(serializers.ModelSerializer):
     def get_total_like(self, obj):
         return obj.get_total_like()
 
-    def get_total_unlike(self, obj):
-        return obj.get_total_unlike()
-
     def get_total_bookmark(self, obj):
         return obj.get_total_bookmark()
 
@@ -69,4 +66,4 @@ class RecipeLikeSerilizer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipeLike
-        fields = ('id', 'user', 'value', 'recipe')
+        fields = ('id', 'user', 'recipe')

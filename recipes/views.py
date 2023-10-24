@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -45,3 +46,15 @@ class RecipeUpdateDestroyAPI(UpdateModelMixin, DestroyAPIView):
     permission_classes = (IsAuthenticated,)
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
+
+class RecipeLikeAPI(CreateAPIView):
+
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RecipeLikeSerilizer
+
+    def post(self, request, pk):
+        recipe = get_object_or_404(Recipe, id=pk)
+        recipe_like, created = RecipeLike.objects.get_or_create(
+            recipe=recipe, user=self.request.user
+        )

@@ -56,30 +56,18 @@ class Recipe(models.Model):
 
     @property
     def get_total_like(self):
-        return RecipeLike.objects.filter(recipe=self, value='Like').count()
-
-    @property
-    def get_total_unlike(self):
-        return RecipeLike.objects.filter(recipe=self, value='Unlike').count()
+        return RecipeLike.objects.filter(recipe=self).count()
 
     @property
     def get_total_bookmark(self):
         return self.bookmarked.count()
 
 
-LIKE_CHOICES = (
-    ('Like', 'Like'),
-    ('Unlike', 'Unlike'),
-)
-
-
 class RecipeLike(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    value = models.CharField(
-        choices=LIKE_CHOICES, default='Like', max_length=8)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f'{self.user.username} {self.value} {self.recipe}'
+        return f'{self.user.username} {self.recipe}'

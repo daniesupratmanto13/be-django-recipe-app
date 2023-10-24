@@ -41,4 +41,3 @@ class RecipeLikeFactory(factory.django.DjangoModelFactory):
 
     user = factory.SubFactory(ProfileFactory)
     recipe = factory.SubFactory(RecipeFactory)
-    value = factory.Faker('random_element', elements=['Like', 'Unlike'])

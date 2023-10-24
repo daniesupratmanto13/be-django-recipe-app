@@ -35,15 +35,8 @@ class RecipeModelTestCase(TestCase):
 
     def test_get_total_like(self):
         recipe = self.recipe
-        total_like = recipe.recipelike_set.filter(
-            value='Like').count()
+        total_like = recipe.recipelike_set.count()
         self.assertEqual(recipe.get_total_like, total_like)
-
-    def test_get_total_unlike(self):
-        recipe = self.recipe
-        total_unlike = recipe.recipelike_set.filter(
-            value='Unlike').count()
-        self.assertEqual(recipe.get_total_unlike, total_unlike)
 
 
 class RecipeLikeModelTestCase(TestCase):
@@ -58,5 +51,5 @@ class RecipeLikeModelTestCase(TestCase):
 
     def test_recipe_like_str(self):
         recipe_like = self.recipe_like
-        expected_string = f'{recipe_like.user.username} {recipe_like.value} {recipe_like.recipe}'
+        expected_string = f'{recipe_like.user.username} {recipe_like.recipe}'
         self.assertEqual(str(recipe_like), expected_string)
